@@ -1,2 +1,3 @@
 # DirectoryNavigator
-Navigates and maintain directories
+
+Created from [Janda.Go](https://github.com/Jandini/Janda.Go)
