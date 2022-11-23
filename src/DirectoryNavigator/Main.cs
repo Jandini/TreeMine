@@ -30,7 +30,7 @@ namespace DirectoryNavigator
 
         IDisposable CreateLogger(DirectoryInfo info) => _loggerFactory
             .AddSerilog(new LoggerConfiguration()
-            .WriteTo.File(Path.ChangeExtension(Path.Combine(info.FullName, info.Name), "log"))
+            .WriteTo.File(Path.ChangeExtension(Path.Combine(info.Parent.FullName, info.Name), "log"))
                 .CreateLogger(), dispose: true);
     
 
@@ -39,10 +39,10 @@ namespace DirectoryNavigator
             var stats = new DirectoryTreeStats();
             var root = new DirectoryInfo(path);
 
-            _logger.LogInformation("Counting files and directories in {root}", root);
-
             using (CreateLogger(root))
             {
+                _logger.LogInformation("Counting {root}", root.FullName);
+
                 foreach (var info in _navigator.NavigateDirectoryTree(root))
                     WriteStats(stats, info);
 
@@ -59,10 +59,8 @@ namespace DirectoryNavigator
 
             using (CreateLogger(root))
             {
-
-                _logger.LogInformation("Scanning {root}", root);
-
-
+                _logger.LogInformation("Scanning {root}", root.FullName);
+    
                 foreach (var info in _navigator.NavigateDirectoryTree(root))
                 {
                     WriteStats(stats, info);
