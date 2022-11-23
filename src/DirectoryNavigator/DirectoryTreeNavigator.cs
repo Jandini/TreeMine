@@ -4,7 +4,6 @@ using System;
 using Microsoft.Extensions.Logging;
 using System.Linq;
 using System.Security.Cryptography;
-using System.Reflection;
 using System.Text;
 
 namespace DirectoryNavigator
@@ -18,10 +17,14 @@ namespace DirectoryNavigator
         {
             _logger = logger;
         }
-
       
 
-        public IEnumerable<DirectoryTreeInfo> NavigateDirectoryTree(DirectoryInfo root) => NavigateDirectoryTree(new DirectoryTreeInfo() { Item = root, Id = Guid.Empty, Parent = Guid.Empty });
+        public IEnumerable<DirectoryTreeInfo> NavigateDirectoryTree(DirectoryInfo root) 
+            => NavigateDirectoryTree(new DirectoryTreeInfo() { 
+                Item = root, 
+                Id = Guid.Empty, 
+                Parent = Guid.Empty 
+            });
 
         public IEnumerable<DirectoryTreeInfo> NavigateDirectoryTree(DirectoryTreeInfo treeInfo)
         {
@@ -102,6 +105,5 @@ namespace DirectoryNavigator
                         yield return subDirInfo;
             }
         }
-
     }
 }

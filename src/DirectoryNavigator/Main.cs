@@ -3,6 +3,7 @@ using System.IO;
 using System;
 using Serilog;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace DirectoryNavigator
 {
@@ -80,9 +81,9 @@ namespace DirectoryNavigator
 
         public void Hash(string path)
         {
-
             var stats = new DirectoryTreeStats();
             var root = new DirectoryInfo(path);
+            var dirs = new List<DirectoryTreeHashInfo>();
 
             if (!root.Exists)
                 throw new DirectoryNotFoundException();
@@ -93,11 +94,15 @@ namespace DirectoryNavigator
 
                 foreach (var info in _navigator.HashDirectoryTree(root).OrderBy(a => a.Hash))
                 {
+                    dirs.Add(info);
                     WriteStats(stats, info);
                     _logger.LogInformation("{hash} {level} {item} ", info.Hash, info.Level.ToString().PadLeft(2), info.Item.FullName[(root.FullName.Length + 1)..]);
                 }
 
-                _logger.LogInformation("Found {dirs} directories | {bytes} bytes", stats.DirCount, stats.TotalFileSize);
+                var unique = dirs.DistinctBy(a => a.Hash);
+                _logger.LogInformation("Found {dirs} directories | {count} unique directores ", stats.DirCount, unique.Count());
+
+                
             }
         }
     }
