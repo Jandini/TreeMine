@@ -15,7 +15,7 @@ namespace DirectoryNavigator
         {            
             try
             {                
-                Parser.Default.ParseArguments<Options.Count, Options.Scan>(args)
+                Parser.Default.ParseArguments<Options.Count, Options.Scan, Options.Hash>(args)
                     .WithParsed((parameters) =>
                     {
                         var configuration = new ConfigurationBuilder()
@@ -46,6 +46,10 @@ namespace DirectoryNavigator
 
                                 case Options.Scan scan:
                                     main.Scan(scan.Path);
+                                    break;
+
+                                case Options.Hash hash:
+                                    main.Hash(hash.Path);
                                     break;
                             };
                         }

@@ -3,7 +3,7 @@ using System.IO;
 
 namespace DirectoryNavigator
 {
-    public sealed class DirectoryTreeInfo
+    public class DirectoryTreeInfo
     {
         public Guid Id { get; set; }
         public Guid Parent { get; set; }

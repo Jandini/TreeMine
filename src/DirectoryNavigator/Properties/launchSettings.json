@@ -8,6 +8,10 @@
       "commandName": "Project",
       "commandLineArgs": "scan -p C:\\TEMP"
     },
+    "Hash": {
+      "commandName": "Project",
+      "commandLineArgs": "hash -p \"D:\\My Folders\\_MOVED_TO_SORT_DELETE_WHEN_SORTED\\My Projects\""
+    },
     "Help": {
       "commandName": "Project",
       "commandLineArgs": "--help"

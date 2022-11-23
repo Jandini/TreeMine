@@ -22,5 +22,11 @@ namespace DirectoryNavigator
         {
 
         }
+
+        [Verb("hash", HelpText = "Hash directories")]
+        internal class Hash : DirectoryPath
+        {
+
+        }
     }
 }

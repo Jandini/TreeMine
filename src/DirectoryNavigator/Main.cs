@@ -2,6 +2,7 @@
 using System.IO;
 using System;
 using Serilog;
+using System.Linq;
 
 namespace DirectoryNavigator
 {
@@ -39,6 +40,9 @@ namespace DirectoryNavigator
             var stats = new DirectoryTreeStats();
             var root = new DirectoryInfo(path);
 
+            if (!root.Exists)
+                throw new DirectoryNotFoundException();
+
             using (CreateLogger(root))
             {
                 _logger.LogInformation("Counting {root}", root.FullName);
@@ -57,6 +61,9 @@ namespace DirectoryNavigator
             var stats = new DirectoryTreeStats();
             var root = new DirectoryInfo(path);
 
+            if (!root.Exists)
+                throw new DirectoryNotFoundException();
+
             using (CreateLogger(root))
             {
                 _logger.LogInformation("Scanning {root}", root.FullName);
@@ -68,6 +75,29 @@ namespace DirectoryNavigator
                 }
 
                 _logger.LogInformation("Found {files} files | {dirs} directories | {bytes} bytes", stats.FileCount, stats.DirCount, stats.TotalFileSize);
+            }
+        }
+
+        public void Hash(string path)
+        {
+
+            var stats = new DirectoryTreeStats();
+            var root = new DirectoryInfo(path);
+
+            if (!root.Exists)
+                throw new DirectoryNotFoundException();
+
+            using (CreateLogger(root))
+            {
+                _logger.LogInformation("Hashing {root}", root.FullName);
+
+                foreach (var info in _navigator.HashDirectoryTree(root).OrderBy(a => a.Hash))
+                {
+                    WriteStats(stats, info);
+                    _logger.LogInformation("{hash} {level} {item} ", info.Hash, info.Level.ToString().PadLeft(2), info.Item.FullName[(root.FullName.Length + 1)..]);
+                }
+
+                _logger.LogInformation("Found {dirs} directories | {bytes} bytes", stats.DirCount, stats.TotalFileSize);
             }
         }
     }
