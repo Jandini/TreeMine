@@ -34,7 +34,8 @@ namespace DirectoryNavigator
 
         internal static IServiceCollection AddServices(this IServiceCollection services)
         {
-            return services.AddTransient<IMain, Main>();
+            return services.AddTransient<IMain, Main>()
+                .AddTransient<IDirectoryTreeNavigator, DirectoryTreeNavigator>();
         }
     }
 }

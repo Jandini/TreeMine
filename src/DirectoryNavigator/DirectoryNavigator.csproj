@@ -1,9 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
 		<TargetFramework>net6.0</TargetFramework>
 		<BaseOutputPath>..\..\bin</BaseOutputPath>
-		<AssemblyName>dn</AssemblyName>
+		<AssemblyName></AssemblyName>
+		<Authors>Matt Janda</Authors>
 	</PropertyGroup>
 
 	<ItemGroup>

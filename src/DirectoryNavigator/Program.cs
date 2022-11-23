@@ -14,8 +14,8 @@ namespace DirectoryNavigator
         static void Main(string[] args)
         {            
             try
-            {
-                Parser.Default.ParseArguments<Options.Run, Options.Create>(args)
+            {                
+                Parser.Default.ParseArguments<Options.Count, Options.Scan>(args)
                     .WithParsed((parameters) =>
                     {
                         var configuration = new ConfigurationBuilder()
@@ -40,14 +40,13 @@ namespace DirectoryNavigator
 
                             switch (parameters)
                             {
-                                case Options.Run:
-                                    main.Run();
+                                case Options.Count count:
+                                    main.Count(count.Path);
                                     break;
 
-                                case Options.Create options:
-                                    main.Create(options.Name);
+                                case Options.Scan scan:
+                                    main.Scan(scan.Path);
                                     break;
-
                             };
                         }
                         catch (Exception ex)

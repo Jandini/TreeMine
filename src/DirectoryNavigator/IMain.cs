@@ -2,7 +2,7 @@
 {
     internal interface IMain
     {
-        void Run();
-        void Create(string name);
+        void Count(string path);
+        void Scan(string path);
     }
 }

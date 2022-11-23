@@ -1,11 +1,12 @@
 {
   "profiles": {
-    "Run": {
-      "commandName": "Project"
-    },
-    "Go": {
+    "Count": {
       "commandName": "Project",
-      "commandLineArgs": "go -n Example"
+      "commandLineArgs": "count -p C:\\WINDOWS"
+    },
+    "Scan": {
+      "commandName": "Project",
+      "commandLineArgs": "scan -p C:\\TEMP"
     },
     "Help": {
       "commandName": "Project",
