@@ -12,6 +12,16 @@
       "commandName": "Project",
       "commandLineArgs": "hash -p \"D:\\My Folders\\_MOVED_TO_SORT_DELETE_WHEN_SORTED\\My Projects\""
     },
+
+    "Hash Nas Software": {
+      "commandName": "Project",
+      "commandLineArgs": "hash -p \\\\nas\\software"
+    },
+    "Hash C": {
+      "commandName": "Project",
+      "commandLineArgs": "hash -p C:\\"
+    },
+
     "Help": {
       "commandName": "Project",
       "commandLineArgs": "--help"

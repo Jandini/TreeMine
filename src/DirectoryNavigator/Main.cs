@@ -30,11 +30,21 @@ namespace DirectoryNavigator
         }
 
 
-        IDisposable CreateLogger(DirectoryInfo info) => _loggerFactory
-            .AddSerilog(new LoggerConfiguration()
-            .WriteTo.File(Path.ChangeExtension(Path.Combine(info.Parent.FullName, info.Name), "log"))
-                .CreateLogger(), dispose: true);
-    
+        IDisposable CreateLogger(DirectoryInfo info)
+        {
+            // check if file is a root or unc root
+            var name = info.FullName == info.Root.FullName
+                ? info.Root.FullName.Replace(Path.DirectorySeparatorChar, '_').Replace(Path.VolumeSeparatorChar, '_')
+                : info.Name;
+
+            var path = Path.ChangeExtension(Path.Combine(info.Parent?.FullName ?? info.FullName, name), "log");
+
+            return _loggerFactory
+                .AddSerilog(new LoggerConfiguration()
+                .WriteTo.File(path)
+                    .CreateLogger(), dispose: true);
+        }
+
 
         public void Count(string path)
         {
@@ -68,7 +78,7 @@ namespace DirectoryNavigator
             using (CreateLogger(root))
             {
                 _logger.LogInformation("Scanning {root}", root.FullName);
-    
+
                 foreach (var info in _navigator.NavigateDirectoryTree(root))
                 {
                     WriteStats(stats, info);
@@ -78,6 +88,8 @@ namespace DirectoryNavigator
                 _logger.LogInformation("Found {files} files | {dirs} directories | {bytes} bytes", stats.FileCount, stats.DirCount, stats.TotalFileSize);
             }
         }
+
+
 
         public void Hash(string path)
         {
@@ -92,7 +104,10 @@ namespace DirectoryNavigator
             {
                 _logger.LogInformation("Hashing {root}", root.FullName);
 
-                foreach (var info in _navigator.HashDirectoryTree(root).OrderBy(a => a.Hash))
+                foreach (var info in _navigator
+                    .HashDirectoryTree(root)
+                    .LogCount(1024, (count) => _logger.LogInformation("Found {dir} dirs...", count))
+                    .OrderBy(a => a.Hash))
                 {
                     dirs.Add(info);
                     WriteStats(stats, info);
@@ -102,7 +117,7 @@ namespace DirectoryNavigator
                 var unique = dirs.DistinctBy(a => a.Hash);
                 _logger.LogInformation("Found {dirs} directories | {count} unique directores ", stats.DirCount, unique.Count());
 
-                
+
             }
         }
     }
