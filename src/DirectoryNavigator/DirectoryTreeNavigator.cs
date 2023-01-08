@@ -87,18 +87,18 @@ namespace DirectoryNavigator
                 _logger.LogError(ex.Message);
             }
 
-            // Create content string ordered by file name and size
-            var content = string.Join(';', dirContent.OrderBy(a => a.Name).Select(s => s.Name + ((s as FileInfo)?.Length ?? 0).ToString()));
-            var hash = Convert.ToHexString(MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(content)));
-
-            var thisDir = new DirectoryTreeHashInfo() { Id = treeInfo.Id, Parent = treeInfo.Parent, Level = treeInfo.Level, Item = treeInfo.Item, Hash = hash };
-
-            if (treeInfo.Id != Guid.Empty)
-                yield return thisDir;
-
             // Check if the content was retrivied successfully
             if (dirContent != null)
             {
+                // Create content string ordered by file name and size
+                var content = string.Join(';', dirContent.OrderBy(a => a.Name).Select(s => s.Name + ((s as FileInfo)?.Length ?? 0).ToString()));
+                var hash = Convert.ToHexString(MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(content)));
+
+                var thisDir = new DirectoryTreeHashInfo() { Id = treeInfo.Id, Parent = treeInfo.Parent, Level = treeInfo.Level, Item = treeInfo.Item, Hash = hash };
+
+                if (treeInfo.Id != Guid.Empty)
+                    yield return thisDir;
+
                 // Return directories recursively
                 foreach (DirectoryInfo dirInfo in dirContent.OfType<DirectoryInfo>())
                     foreach (var subDirInfo in HashDirectoryTree(new DirectoryTreeHashInfo() { Id = Guid.NewGuid(), Level = thisDir.Level + 1, Parent = thisDir.Id, Item = dirInfo }))
