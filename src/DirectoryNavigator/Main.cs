@@ -111,13 +111,11 @@ namespace DirectoryNavigator
                 {
                     dirs.Add(info);
                     WriteStats(stats, info);
-                    _logger.LogInformation("{hash} {level} {item} ", info.Hash, info.Level.ToString().PadLeft(2), info.Item.FullName[(root.FullName.Length + 1)..]);
+                    _logger.LogDebug("{hash} {level} {item} ", info.Hash, info.Level.ToString().PadLeft(2), info.Item.FullName[(root.FullName.Length + 1)..]);
                 }
 
-                var unique = dirs.DistinctBy(a => a.Hash);
-                _logger.LogInformation("Found {dirs} directories | {count} unique directores ", stats.DirCount, unique.Count());
-
-
+                var unique = dirs.DistinctBy(a => a.Hash).Count();
+                _logger.LogInformation("Found {dirs} directories | {count} unique | {dups} duplicates ", stats.DirCount, unique, stats.DirCount - unique);
             }
         }
     }
