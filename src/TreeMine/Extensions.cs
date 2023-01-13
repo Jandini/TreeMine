@@ -20,7 +20,7 @@ namespace TreeMine
         {
             provider
                 .GetRequiredService<ILogger<Program>>()
-                .LogInformation("DirectoryNavigator {version}", Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion);
+                .LogInformation("TreeMine {version}", Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion);
 
             return provider;
         }
@@ -35,7 +35,8 @@ namespace TreeMine
         internal static IServiceCollection AddServices(this IServiceCollection services)
         {
             return services.AddTransient<IMain, Main>()
-                .AddTransient<IDirectoryMiner, DirectoryMiner>();
+                .AddTransient<IDirectoryMiner, DirectoryMiner>()
+                .AddTransient<IFileSystemMiner, FileSystemMiner>();
         }
     }
 }
