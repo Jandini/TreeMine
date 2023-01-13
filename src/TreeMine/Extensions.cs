@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Reflection;
 
-namespace DirectoryNavigator
+namespace TreeMine
 {
     internal static class Extensions
     {
@@ -35,7 +35,7 @@ namespace DirectoryNavigator
         internal static IServiceCollection AddServices(this IServiceCollection services)
         {
             return services.AddTransient<IMain, Main>()
-                .AddTransient<IDirectoryTreeNavigator, DirectoryTreeNavigator>();
+                .AddTransient<IDirectoryMiner, DirectoryMiner>();
         }
     }
 }

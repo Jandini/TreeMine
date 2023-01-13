@@ -21,6 +21,10 @@
       "commandName": "Project",
       "commandLineArgs": "hash -p C:\\"
     },
+    "Hash D": {
+      "commandName": "Project",
+      "commandLineArgs": "hash -p D:\\"
+    },
 
     "Help": {
       "commandName": "Project",

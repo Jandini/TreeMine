@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 
-namespace DirectoryNavigator
+namespace TreeMine
 {
     internal static class DirectoryTreeExtensions
     {

@@ -5,19 +5,22 @@ using Serilog;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace DirectoryNavigator
+namespace TreeMine
 {
     internal class Main : IMain
     {
         private readonly ILogger<Main> _logger;
         private readonly ILoggerFactory _loggerFactory;
-        private readonly IDirectoryTreeNavigator _navigator;
+        private readonly IFileSystemMiner _fsMiner;
+        private readonly IDirectoryMiner _directoryMiner;
 
-        public Main(ILogger<Main> logger, ILoggerFactory loggerFactory, IDirectoryTreeNavigator navigator)
+
+        public Main(ILogger<Main> logger, ILoggerFactory loggerFactory, IDirectoryMiner directoryMiner, IFileSystemMiner fsMiner)
         {
             _logger = logger;
-            _navigator = navigator;
+            _directoryMiner = directoryMiner;
             _loggerFactory = loggerFactory;
+            _fsMiner = fsMiner;
         }
 
 
@@ -58,7 +61,7 @@ namespace DirectoryNavigator
             {
                 _logger.LogInformation("Counting {root}", root.FullName);
 
-                foreach (var info in _navigator.NavigateDirectoryTree(root))
+                foreach (var info in _fsMiner.MineFileSystem(root))
                     WriteStats(stats, info);
 
                 _logger.LogInformation("Found {files} files | {dirs} directories | {bytes} bytes", stats.FileCount, stats.DirCount, stats.TotalFileSize);
@@ -79,7 +82,7 @@ namespace DirectoryNavigator
             {
                 _logger.LogInformation("Scanning {root}", root.FullName);
 
-                foreach (var info in _navigator.NavigateDirectoryTree(root))
+                foreach (var info in _fsMiner.MineFileSystem(root))
                 {
                     WriteStats(stats, info);
                     _logger.LogInformation("{level} {@id}  {@parent} {item}", info.Level.ToString().PadLeft(2), info.Id, info.Parent, info.Item.FullName[(root.FullName.Length + 1)..]);
@@ -104,8 +107,8 @@ namespace DirectoryNavigator
             {
                 _logger.LogInformation("Hashing {root}", root.FullName);
 
-                foreach (var info in _navigator
-                    .HashDirectoryTree(root)
+                foreach (var info in _directoryMiner
+                    .MineDirectories(root)
                     .LogCount(1024, (count) => _logger.LogInformation("Found {dir} dirs...", count))
                     .OrderBy(a => a.Hash))
                 {

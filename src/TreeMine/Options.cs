@@ -1,6 +1,6 @@
 ﻿using CommandLine;
 
-namespace DirectoryNavigator
+namespace TreeMine
 {
     class Options
     {

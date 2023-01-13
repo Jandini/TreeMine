@@ -1,4 +1,4 @@
-﻿namespace DirectoryNavigator
+﻿namespace TreeMine
 {
     public class DirectoryTreeHashInfo : DirectoryTreeInfo
     {

@@ -1,4 +1,4 @@
-﻿namespace DirectoryNavigator
+﻿namespace TreeMine
 {
     internal interface IMain
     {

@@ -7,7 +7,7 @@ using System.IO;
 using Serilog;
 using CommandLine;
 
-namespace DirectoryNavigator
+namespace TreeMine
 {
     class Program
     {

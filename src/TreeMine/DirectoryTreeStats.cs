@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace DirectoryNavigator
+namespace TreeMine
 {
     public sealed class DirectoryTreeStats
     {
