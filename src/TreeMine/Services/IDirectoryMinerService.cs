@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 
-namespace TreeMine
+namespace TreeMine.Services
 {
     internal interface IDirectoryMinerService
     {

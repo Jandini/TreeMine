@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace TreeMine
+namespace TreeMine.Services
 {
     public sealed class FileSystemStats
     {
@@ -19,7 +19,7 @@ namespace TreeMine
             else
             {
                 DirCount++;
-            }            
+            }
         }
     }
 }

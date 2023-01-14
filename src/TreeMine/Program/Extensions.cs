@@ -3,11 +3,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Reflection;
+using TreeMine.Services;
 
 namespace TreeMine
 {
-    internal static class ProgramExtensions
+    internal static class Extensions
     {
         internal static IConfigurationBuilder AddAppSettingsJson(this IConfigurationBuilder builder, string name)
         {
@@ -37,6 +39,29 @@ namespace TreeMine
             return services.AddTransient<IMain, Main>()
                 .AddTransient<IDirectoryMinerService, DirectoryMinerService>()
                 .AddTransient<IFileSystemMinerService, FileSystemMinerService>();
+        }
+
+
+
+        /// <summary>
+        /// Allows to report enumeration progress
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="every"></param>
+        /// <param name="progress"></param>
+        /// <returns></returns>
+        internal static IEnumerable<TSource> GetProgress<TSource>(this IEnumerable<TSource> source, int every, Action<int, TSource> progress)
+        {
+            int count = 0;
+
+            foreach (var item in source)
+            {
+                if ((++count % every) == 0)
+                    progress(count, item);
+
+                yield return item;
+            }
         }
     }
 }

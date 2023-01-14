@@ -4,6 +4,7 @@ using System;
 using Serilog;
 using System.Linq;
 using System.Collections.Generic;
+using TreeMine.Services;
 
 namespace TreeMine
 {
@@ -28,7 +29,7 @@ namespace TreeMine
         {
             stats.Add(info.Item);
 
-            if ((stats.FileCount % 1024) == 0)
+            if (stats.FileCount % 1024 == 0)
                 Console.Title = $"Found {stats.FileCount} files | {stats.DirCount} directories | {stats.TotalFileSize} bytes";
         }
 
@@ -109,7 +110,7 @@ namespace TreeMine
 
                 foreach (var info in _directoryMiner
                     .MineDirectories(root)
-                    .LogCount(1024, (count) => _logger.LogInformation("Found {dir} dirs...", count))
+                    .GetProgress(1024, (count, item) => { _logger.LogInformation("Found {dir} dirs...", count); Console.Title = item.Item.FullName; })
                     .OrderBy(a => a.Hash))
                 {
                     dirs.Add(info);
