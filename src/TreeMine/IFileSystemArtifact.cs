@@ -8,6 +8,6 @@ namespace TreeMine
         Guid Id { get; set; }
         Guid Parent { get; set; }
         int Level { get; set; }
-        FileSystemInfo Item { get; set; }
+        FileSystemInfo Info { get; set; }
     }
 }

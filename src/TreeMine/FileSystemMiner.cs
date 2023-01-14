@@ -8,16 +8,19 @@ namespace TreeMine
     public static class FileSystemMiner
     {
         public static IEnumerable<T> Mine<T>(DirectoryInfo root, Func<T, IEnumerable<FileSystemInfo>, bool> onDirArtifact, Func<T, bool> onFileArtifact, Func<Exception, bool> onException)
-            where T : IFileSystemArtifact, new() => Mine(new T() { Item = root, Id = Guid.Empty, Parent = Guid.Empty }, onDirArtifact, onFileArtifact, onException);
+            where T : IFileSystemArtifact, new() => Mine(new T() { Info = root, Id = Guid.Empty, Parent = Guid.Empty }, onDirArtifact, onFileArtifact, onException);
 
         public static IEnumerable<T> Mine<T>(string root, Func<T, IEnumerable<FileSystemInfo>, bool> onDirArtifact, Func<T, bool> onFileArtifact, Func<Exception, bool> onException)
-            where T : IFileSystemArtifact, new() => Mine(new T() { Item = new DirectoryInfo(root), Id = Guid.Empty, Parent = Guid.Empty }, onDirArtifact, onFileArtifact, onException);
+            where T : IFileSystemArtifact, new() => Mine(new T() { Info = new DirectoryInfo(root), Id = Guid.Empty, Parent = Guid.Empty }, onDirArtifact, onFileArtifact, onException);
 
         public static IEnumerable<IFileSystemArtifact> Mine(DirectoryInfo root, Func<IFileSystemArtifact, IEnumerable<FileSystemInfo>, bool> onDirArtifact, Func<IFileSystemArtifact, bool> onFileArtifact, Func<Exception, bool> onException)
-            => Mine<FileSystemArtifact>(new FileSystemArtifact() { Item = root, Id = Guid.Empty, Parent = Guid.Empty }, onDirArtifact, onFileArtifact, onException);
+            => Mine<FileSystemArtifact>(new FileSystemArtifact() { Info = root, Id = Guid.Empty, Parent = Guid.Empty }, onDirArtifact, onFileArtifact, onException);
 
         public static IEnumerable<IFileSystemArtifact> Mine(string root, Func<IFileSystemArtifact, IEnumerable<FileSystemInfo>, bool> onDirArtifact, Func<IFileSystemArtifact, bool> onFileArtifact, Func<Exception, bool> onException)
-            => Mine<FileSystemArtifact>(new FileSystemArtifact() { Item = new DirectoryInfo(root), Id = Guid.Empty, Parent = Guid.Empty }, onDirArtifact, onFileArtifact, onException);
+            => Mine<FileSystemArtifact>(new FileSystemArtifact() { Info = new DirectoryInfo(root), Id = Guid.Empty, Parent = Guid.Empty }, onDirArtifact, onFileArtifact, onException);
+
+        public static IEnumerable<IFileSystemArtifact> Mine(string root)
+          => Mine(new FileSystemArtifact() { Info = new DirectoryInfo(root), Id = Guid.Empty, Parent = Guid.Empty }, (dir, content) => true, (file) => true, (exception) => false);
 
 
         /// <summary>
@@ -36,7 +39,7 @@ namespace TreeMine
             try
             {
                 // Get directory content, both files and directories
-                if (dirArtifact.Item is DirectoryInfo dirInfo)
+                if (dirArtifact.Info is DirectoryInfo dirInfo)
                     dirContent = dirInfo.GetFileSystemInfos();
             }
             catch (Exception ex)
@@ -54,15 +57,15 @@ namespace TreeMine
 
                 // Mine directories recursively
                 foreach (DirectoryInfo dirInfo in dirContent.OfType<DirectoryInfo>())
-                    foreach (var subDirInfo in Mine(new T() { Id = Guid.NewGuid(), Level = dirArtifact.Level + 1, Parent = dirArtifact.Id, Item = dirInfo }, onDirArtifact, onFileArtifact, onException))
+                    foreach (var subDirInfo in Mine(new T() { Id = Guid.NewGuid(), Level = dirArtifact.Level + 1, Parent = dirArtifact.Id, Info = dirInfo }, onDirArtifact, onFileArtifact, onException))
                         yield return subDirInfo;
 
                 if (onFileArtifact != null)
                 {
                     // Create and return file artifacts found in directory content
-                    foreach (FileInfo fi in dirContent.OfType<FileInfo>())
+                    foreach (FileInfo fileInfo in dirContent.OfType<FileInfo>())
                     {
-                        var fileArtifact = new T() { Id = Guid.NewGuid(), Parent = dirArtifact.Id, Level = dirArtifact.Level, Item = fi };
+                        var fileArtifact = new T() { Id = Guid.NewGuid(), Parent = dirArtifact.Id, Level = dirArtifact.Level, Info = fileInfo };
                         if (onFileArtifact.Invoke(fileArtifact))
                             yield return fileArtifact;
                     }

@@ -20,7 +20,7 @@ namespace TreeMine.Services
         public IEnumerable<FileSystemArtifact> MineFileSystem(DirectoryInfo root) => FileSystemMiner.Mine(
             new FileSystemArtifact()
             {
-                Item = root,
+                Info = root,
                 Id = Guid.Empty,
                 Parent = Guid.Empty
             }, null, null, (ex) => { _logger.LogError(ex, ex.Message); return true; });

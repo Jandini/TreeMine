@@ -27,7 +27,7 @@ namespace TreeMine
 
         private static void WriteStats(FileSystemStats stats, IFileSystemArtifact info)
         {
-            stats.Add(info.Item);
+            stats.Add(info.Info);
 
             if (stats.FileCount % 1024 == 0)
                 Console.Title = $"Found {stats.FileCount} files | {stats.DirCount} directories | {stats.TotalFileSize} bytes";
@@ -86,7 +86,7 @@ namespace TreeMine
                 foreach (var info in _fsMiner.MineFileSystem(root))
                 {
                     WriteStats(stats, info);
-                    _logger.LogInformation("{level} {@id}  {@parent} {item}", info.Level.ToString().PadLeft(2), info.Id, info.Parent, info.Item.FullName[(root.FullName.Length + 1)..]);
+                    _logger.LogInformation("{level} {@id}  {@parent} {item}", info.Level.ToString().PadLeft(2), info.Id, info.Parent, info.Info.FullName[(root.FullName.Length + 1)..]);
                 }
 
                 _logger.LogInformation("Found {files} files | {dirs} directories | {bytes} bytes", stats.FileCount, stats.DirCount, stats.TotalFileSize);
@@ -110,12 +110,12 @@ namespace TreeMine
 
                 foreach (var info in _directoryMiner
                     .MineDirectories(root)
-                    .GetProgress(1024, (count, item) => { _logger.LogInformation("Found {dir} dirs...", count); Console.Title = item.Item.FullName; })
+                    .GetProgress(1024, (count, item) => { _logger.LogInformation("Found {dir} dirs...", count); Console.Title = item.Info.FullName; })
                     .OrderBy(a => a.Hash))
                 {
                     dirs.Add(info);
                     WriteStats(stats, info);
-                    _logger.LogDebug("{hash} {level} {item} ", info.Hash, info.Level.ToString().PadLeft(2), info.Item.FullName[(root.FullName.Length + 1)..]);
+                    _logger.LogDebug("{hash} {level} {item} ", info.Hash, info.Level.ToString().PadLeft(2), info.Info.FullName[(root.FullName.Length + 1)..]);
                 }
 
                 var unique = dirs.DistinctBy(a => a.Hash).Count();

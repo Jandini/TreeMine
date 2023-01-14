@@ -22,7 +22,7 @@ namespace TreeMine.Services
           FileSystemMiner.Mine(
               new FileSystemArtifactEx()
               {
-                  Item = root,
+                  Info = root,
                   Id = Guid.Empty,
                   Parent = Guid.Empty,
                   Hash = Convert.ToHexString(MD5.Create().ComputeHash(Array.Empty<byte>()))
