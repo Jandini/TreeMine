@@ -37,49 +37,5 @@ namespace TreeMine.Services
               null,
               (ex) => { _logger.LogError(ex, ex.Message); return true; });
 
-
-        //public IEnumerable<FileSystemArtifactEx> MineDirectories(DirectoryInfo root) =>
-        //    MineDirectories(new FileSystemArtifactEx()
-        //    {
-        //        Item = root,
-        //        Id = Guid.Empty,
-        //        Parent = Guid.Empty,
-        //        Hash = Convert.ToHexString(MD5.Create().ComputeHash(Array.Empty<byte>()))
-        //    });
-
-
-
-        //public IEnumerable<FileSystemArtifactEx> MineDirectories(FileSystemArtifactEx treeInfo)
-        //{
-        //    IEnumerable<FileSystemInfo> dirContent = null;
-
-        //    try
-        //    {
-        //        // Get directory content, both files and directories
-        //        dirContent = (treeInfo.Item as DirectoryInfo)?.GetFileSystemInfos();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError(ex, ex.Message);
-        //    }
-
-        //    // Check if the content was retrivied successfully
-        //    if (dirContent != null)
-        //    {
-        //        // Create content string ordered by file name and size
-        //        var content = string.Join(';', dirContent.OrderBy(a => a.Name).Select(s => s.Name + ((s as FileInfo)?.Length ?? 0).ToString()));
-        //        var hash = Convert.ToHexString(MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(content)));
-
-        //        var thisDir = new FileSystemArtifactEx() { Id = treeInfo.Id, Parent = treeInfo.Parent, Level = treeInfo.Level, Item = treeInfo.Item, Hash = hash };
-
-        //        if (treeInfo.Id != Guid.Empty)
-        //            yield return thisDir;
-
-        //        // Return directories recursively
-        //        foreach (DirectoryInfo dirInfo in dirContent.OfType<DirectoryInfo>())
-        //            foreach (var subDirInfo in MineDirectories(new FileSystemArtifactEx() { Id = Guid.NewGuid(), Level = thisDir.Level + 1, Parent = thisDir.Id, Item = dirInfo }))
-        //                yield return subDirInfo;
-        //    }
-        //}
     }
 }
