@@ -11,11 +11,11 @@ namespace TreeMine
     {
         private readonly ILogger<Main> _logger;
         private readonly ILoggerFactory _loggerFactory;
-        private readonly IFileSystemMiner _fsMiner;
-        private readonly IDirectoryMiner _directoryMiner;
+        private readonly IFileSystemMinerService _fsMiner;
+        private readonly IDirectoryMinerService _directoryMiner;
 
 
-        public Main(ILogger<Main> logger, ILoggerFactory loggerFactory, IDirectoryMiner directoryMiner, IFileSystemMiner fsMiner)
+        public Main(ILogger<Main> logger, ILoggerFactory loggerFactory, IDirectoryMinerService directoryMiner, IFileSystemMinerService fsMiner)
         {
             _logger = logger;
             _directoryMiner = directoryMiner;
@@ -24,7 +24,7 @@ namespace TreeMine
         }
 
 
-        private static void WriteStats(DirectoryTreeStats stats, DirectoryTreeInfo info)
+        private static void WriteStats(FileSystemStats stats, IFileSystemArtifact info)
         {
             stats.Add(info.Item);
 
@@ -51,7 +51,7 @@ namespace TreeMine
 
         public void Count(string path)
         {
-            var stats = new DirectoryTreeStats();
+            var stats = new FileSystemStats();
             var root = new DirectoryInfo(path);
 
             if (!root.Exists)
@@ -72,7 +72,7 @@ namespace TreeMine
         public void Scan(string path)
         {
 
-            var stats = new DirectoryTreeStats();
+            var stats = new FileSystemStats();
             var root = new DirectoryInfo(path);
 
             if (!root.Exists)
@@ -96,9 +96,9 @@ namespace TreeMine
 
         public void Hash(string path)
         {
-            var stats = new DirectoryTreeStats();
+            var stats = new FileSystemStats();
             var root = new DirectoryInfo(path);
-            var dirs = new List<DirectoryTreeHashInfo>();
+            var dirs = new List<FileSystemArtifactEx>();
 
             if (!root.Exists)
                 throw new DirectoryNotFoundException();

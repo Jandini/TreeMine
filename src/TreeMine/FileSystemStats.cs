@@ -2,7 +2,7 @@
 
 namespace TreeMine
 {
-    public sealed class DirectoryTreeStats
+    public sealed class FileSystemStats
     {
         public int DirCount { get; set; }
         public int FileCount { get; set; }

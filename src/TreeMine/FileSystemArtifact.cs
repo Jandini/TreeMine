@@ -3,7 +3,7 @@ using System.IO;
 
 namespace TreeMine
 {
-    public class DirectoryTreeInfo
+    public class FileSystemArtifact : IFileSystemArtifact
     {
         public Guid Id { get; set; }
         public Guid Parent { get; set; }

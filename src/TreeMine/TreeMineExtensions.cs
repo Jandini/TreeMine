@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace TreeMine
 {
-    internal static class DirectoryTreeExtensions
+    internal static class TreeMineExtensions
     {
 
         internal static IEnumerable<TSource> LogCount<TSource>(this IEnumerable<TSource> source, int value, Action<int> log)

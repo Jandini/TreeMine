@@ -2,7 +2,7 @@
 
 namespace TreeMine
 {
-    class Options
+    class ProgramOptions
     {
         internal class DirectoryPath
         {

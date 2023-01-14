@@ -15,7 +15,7 @@ namespace TreeMine
         {            
             try
             {                
-                Parser.Default.ParseArguments<Options.Count, Options.Scan, Options.Hash>(args)
+                Parser.Default.ParseArguments<ProgramOptions.Count, ProgramOptions.Scan, ProgramOptions.Hash>(args)
                     .WithParsed((parameters) =>
                     {
                         var configuration = new ConfigurationBuilder()
@@ -40,15 +40,15 @@ namespace TreeMine
 
                             switch (parameters)
                             {
-                                case Options.Count count:
+                                case ProgramOptions.Count count:
                                     main.Count(count.Path);
                                     break;
 
-                                case Options.Scan scan:
+                                case ProgramOptions.Scan scan:
                                     main.Scan(scan.Path);
                                     break;
 
-                                case Options.Hash hash:
+                                case ProgramOptions.Hash hash:
                                     main.Hash(hash.Path);
                                     break;
                             };

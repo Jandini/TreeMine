@@ -7,7 +7,7 @@ using System.Reflection;
 
 namespace TreeMine
 {
-    internal static class Extensions
+    internal static class ProgramExtensions
     {
         internal static IConfigurationBuilder AddAppSettingsJson(this IConfigurationBuilder builder, string name)
         {
@@ -35,8 +35,8 @@ namespace TreeMine
         internal static IServiceCollection AddServices(this IServiceCollection services)
         {
             return services.AddTransient<IMain, Main>()
-                .AddTransient<IDirectoryMiner, DirectoryMiner>()
-                .AddTransient<IFileSystemMiner, FileSystemMiner>();
+                .AddTransient<IDirectoryMinerService, DirectoryMinerService>()
+                .AddTransient<IFileSystemMinerService, FileSystemMinerService>();
         }
     }
 }
